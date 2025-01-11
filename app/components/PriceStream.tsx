@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 
 interface StockResponse {
-  status: string;
   price: number;
   timestamp: string;
 }
@@ -13,40 +12,60 @@ export function usePriceStream() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let mounted = true;
+    let eventSource: EventSource | null = null;
+    let retryTimeout: NodeJS.Timeout | null = null;
 
-    const fetchPrice = async () => {
-      try {
-        const response = await fetch("/api/stock-price");
-        if (!response.ok) {
-          throw new Error("Failed to fetch price");
-        }
-        const data = (await response.json()) as StockResponse;
-        console.log("Received data:", data); // Debug log
-
-        if (mounted && typeof data.price === "number") {
-          console.log("Setting price:", data.price); // Debug log
-          setPrice(data.price);
-          setError(null);
-        }
-      } catch (err) {
-        if (mounted) {
-          setError("Failed to fetch price");
-          console.error("Error fetching price:", err);
-        }
+    const connectSSE = () => {
+      console.log("Setting up EventSource");
+      if (eventSource) {
+        eventSource.close();
       }
+
+      eventSource = new EventSource("/api/stock-price");
+
+      eventSource.onopen = () => {
+        console.log("SSE Connection opened");
+        setError(null);
+      };
+
+      eventSource.onmessage = (event) => {
+        try {
+          console.log("Raw SSE message:", event.data);
+          const data = JSON.parse(event.data) as StockResponse;
+          console.log("Parsed SSE data:", data);
+
+          if (data && typeof data.price === "number") {
+            console.log("Setting new price:", data.price);
+            setPrice(data.price);
+          }
+        } catch (err) {
+          console.error("Error processing SSE message:", err);
+        }
+      };
+
+      eventSource.onerror = (err) => {
+        console.error("SSE Connection error:", err);
+        eventSource?.close();
+
+        // Attempt to reconnect after 2 seconds
+        retryTimeout = setTimeout(() => {
+          console.log("Attempting to reconnect...");
+          connectSSE();
+        }, 2000);
+      };
     };
 
-    // Initial fetch
-    fetchPrice();
+    // Initial connection
+    connectSSE();
 
-    // Set up polling interval
-    const interval = setInterval(fetchPrice, 5000);
-
-    // Cleanup function
+    // Cleanup
     return () => {
-      mounted = false;
-      clearInterval(interval);
+      if (eventSource) {
+        eventSource.close();
+      }
+      if (retryTimeout) {
+        clearTimeout(retryTimeout);
+      }
     };
   }, []);
 

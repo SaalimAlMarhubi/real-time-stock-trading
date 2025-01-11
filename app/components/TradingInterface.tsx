@@ -18,12 +18,20 @@ export default function TradingInterface() {
   const [tradeAmount, setTradeAmount] = useState<number>(1);
 
   useEffect(() => {
-    console.log("Price updated:", price);
     if (typeof price === "number" && price > 0) {
-      setPortfolio((prev) => ({
-        ...prev,
-        currentPrice: price,
-      }));
+      console.log("Updating portfolio with new price:", price);
+      setPortfolio((prev) => {
+        // Only update if the price has actually changed
+        if (prev.currentPrice !== price) {
+          const newPortfolio = {
+            ...prev,
+            currentPrice: price,
+          };
+          console.log("New portfolio state:", newPortfolio);
+          return newPortfolio;
+        }
+        return prev;
+      });
     }
   }, [price]);
 

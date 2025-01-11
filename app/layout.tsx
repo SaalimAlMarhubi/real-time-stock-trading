@@ -9,12 +9,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   useEffect(() => {
+    // Initialize the producer
     fetch("/api/stock-price");
+
+    // Cleanup when component unmounts
+    return () => {
+      fetch("/api/stock-price", { method: "DELETE" });
+    };
   }, []);
 
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body suppressHydrationWarning={true}>{children}</body>
     </html>
   );
 }
