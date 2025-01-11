@@ -54,13 +54,16 @@ export default function TradingInterface() {
     return (
       <Card className="bg-red-50">
         <CardContent className="p-4">
-          <p className="text-red-600">{error}</p>
+          <p className="text-red-600">Error: {error}</p>
         </CardContent>
       </Card>
     );
   }
 
-  // Show loading state while initial price is being fetched
+  // Add debug logs
+  console.log("Current price state:", price);
+  console.log("Current portfolio state:", portfolio);
+
   if (!price || portfolio.currentPrice === 0) {
     return (
       <Card>

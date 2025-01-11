@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 interface StockResponse {
+  status: string;
   price: number;
   timestamp: string;
 }
@@ -21,8 +22,10 @@ export function usePriceStream() {
           throw new Error("Failed to fetch price");
         }
         const data = (await response.json()) as StockResponse;
+        console.log("Received data:", data); // Debug log
+
         if (mounted && typeof data.price === "number") {
-          console.log("Received price:", data.price);
+          console.log("Setting price:", data.price); // Debug log
           setPrice(data.price);
           setError(null);
         }
