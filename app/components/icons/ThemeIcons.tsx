@@ -1,4 +1,3 @@
-// components/icons/ThemeIcons.tsx
 export const SunIcon = () => (
   <svg
     width="15"
