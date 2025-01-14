@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Kafka, logLevel, Partitioners } from "kafkajs";
 
-// Initialize Kafka client
+// Initialise Kafka client
 const kafka = new Kafka({
   clientId: "heat-engineer-producer",
   brokers: ["localhost:29092"],

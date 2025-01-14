@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Header from "./components/Header";
 import "./globals.css";
 
 export default function RootLayout({
@@ -20,7 +21,10 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body suppressHydrationWarning={true}>{children}</body>
+      <body suppressHydrationWarning={true}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
