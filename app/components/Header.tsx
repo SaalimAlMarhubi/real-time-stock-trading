@@ -27,8 +27,11 @@ export default function Header() {
     <header className="sticky top-0 z-50 m-0 w-full border-b-4 border-accent bg-gradient-to-b from-card to-card-100 p-1 drop-shadow-md">
       <div className="flex items-center justify-between px-5 py-2 lg:justify-around">
         {/* Logo Section */}
-        <a className="to-secondary-700 from-secondary divide-secondary-100 z-10 flex items-center justify-center gap-2 divide-x-2 divide-solid rounded-2xl bg-gradient-to-b px-5 py-2 text-secondary-foreground">
-          <div className="flex items-center gap-2">
+        <a
+          href="/en/"
+          className="to-secondary-700 from-secondary divide-secondary-100 z-10 flex items-center justify-center gap-2 divide-x-2 divide-solid rounded-2xl bg-gradient-to-b px-5 py-2 text-secondary-foreground"
+        >
+          <div className="flex items-center justify-center gap-2">
             <div className="flex items-center gap-2">
               <Image
                 src="/heat-engineer-logo.webp"
@@ -43,8 +46,8 @@ export default function Header() {
               </div>
             </div>
           </div>
-          <span className="hidden max-w-32 pl-3 text-xs sm:inline">
-            Trading Platform
+          <span className="max-w-32 hidden pl-3 text-xs sm:inline">
+            Heat loss reports for engineers
           </span>
         </a>
 

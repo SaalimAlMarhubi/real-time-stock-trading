@@ -1,4 +1,3 @@
-// components/TradingInterface.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -56,9 +55,9 @@ export default function TradingInterface() {
 
   if (error) {
     return (
-      <Card className="bg-red-50 dark:bg-red-900">
+      <Card className="bg-destructive/10">
         <CardContent className="p-4">
-          <p className="text-red-600 dark:text-red-200">{error}</p>
+          <p className="text-destructive">{error}</p>
         </CardContent>
       </Card>
     );
@@ -66,11 +65,9 @@ export default function TradingInterface() {
 
   if (!price || portfolio.currentPrice === 0) {
     return (
-      <Card className="dark:bg-gray-800">
+      <Card>
         <CardContent className="p-4 text-center">
-          <p className="text-gray-600 dark:text-gray-300">
-            Loading stock prices...
-          </p>
+          <p className="text-muted-foreground">Loading stock prices...</p>
         </CardContent>
       </Card>
     );
@@ -78,35 +75,27 @@ export default function TradingInterface() {
 
   return (
     <div className="container mx-auto p-4">
-      <Card className="mb-6 dark:bg-gray-800">
+      <Card className="mb-6">
         <CardHeader>
-          <CardTitle className="dark:text-white">
-            Heat Engineer Stock Trading
-          </CardTitle>
+          <CardTitle>Heat Engineer Stock Trading</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-blue-50 dark:bg-blue-900 rounded-lg">
-              <h3 className="text-lg font-semibold mb-2 dark:text-gray-200">
-                Current Price
-              </h3>
-              <p className="text-2xl font-bold text-blue-600 dark:text-blue-300">
-                ${portfolio.currentPrice.toFixed(2)}
+            <div className="text-center p-4 bg-secondary/10 rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Current Price</h3>
+              <p className="text-2xl font-bold text-secondary-600">
+                £{portfolio.currentPrice.toFixed(2)}
               </p>
             </div>
-            <div className="text-center p-4 bg-green-50 dark:bg-green-900 rounded-lg">
-              <h3 className="text-lg font-semibold mb-2 dark:text-gray-200">
-                Cash Balance
-              </h3>
-              <p className="text-2xl font-bold text-green-600 dark:text-green-300">
-                ${portfolio.cashBalance.toFixed(2)}
+            <div className="text-center p-4 bg-primary/10 rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Cash Balance</h3>
+              <p className="text-2xl font-bold text-primary-600">
+                £{portfolio.cashBalance.toFixed(2)}
               </p>
             </div>
-            <div className="text-center p-4 bg-purple-50 dark:bg-purple-900 rounded-lg">
-              <h3 className="text-lg font-semibold mb-2 dark:text-gray-200">
-                Stocks Owned
-              </h3>
-              <p className="text-2xl font-bold text-purple-600 dark:text-purple-300">
+            <div className="text-center p-4 bg-accent/10 rounded-lg">
+              <h3 className="text-lg font-semibold mb-2">Stocks Owned</h3>
+              <p className="text-2xl font-bold text-accent-600">
                 {portfolio.stocksOwned}
               </p>
             </div>
@@ -114,9 +103,9 @@ export default function TradingInterface() {
         </CardContent>
       </Card>
 
-      <Card className="dark:bg-gray-800">
+      <Card>
         <CardHeader>
-          <CardTitle className="dark:text-white">Trade Stocks</CardTitle>
+          <CardTitle>Trade Stocks</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col md:flex-row gap-4 items-center">
@@ -125,12 +114,12 @@ export default function TradingInterface() {
               min="1"
               value={tradeAmount}
               onChange={(e) => setTradeAmount(parseInt(e.target.value) || 0)}
-              className="w-full md:w-32 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+              className="w-full md:w-32"
               placeholder="Amount"
             />
             <Button
               onClick={handleBuy}
-              className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white dark:bg-green-700 dark:hover:bg-green-800"
+              className="w-full md:w-auto bg-secondary hover:bg-secondary-600 text-secondary-foreground"
               disabled={
                 portfolio.currentPrice * tradeAmount > portfolio.cashBalance
               }
@@ -139,7 +128,7 @@ export default function TradingInterface() {
             </Button>
             <Button
               onClick={handleSell}
-              className="w-full md:w-auto bg-red-600 hover:bg-red-700 text-white dark:bg-red-700 dark:hover:bg-red-800"
+              className="w-full md:w-auto bg-destructive hover:bg-destructive/90 text-destructive-foreground"
               disabled={tradeAmount > portfolio.stocksOwned}
             >
               Sell
